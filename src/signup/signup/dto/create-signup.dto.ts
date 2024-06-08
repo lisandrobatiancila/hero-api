@@ -3,4 +3,5 @@ export class CreateSignupDto {
     lastname: string;
     email: string;
     password: string;
+    registerType: string;
 }

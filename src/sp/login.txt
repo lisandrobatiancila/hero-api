@@ -1,0 +1,19 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `loginUser`(in email varchar(30), in password varchar(30))
+BEGIN
+	DECLARE pass VARCHAR(30) DEFAULT "default-";
+    DECLARE message VARCHAR(30) DEFAULT "";
+    DECLARE code int;
+    
+	SELECT password FROM account WHERE email = @email INTO pass ;
+    
+    IF pass != "default-" THEN
+		SET code = 0;
+        SET message = "Valid user";
+	ELSE IF pass = 'default-' THEN
+		SET message = "Invalid user";
+        SET code = 400;
+	END IF;
+    END IF;
+    
+    SELECT pass, message, code;
+END

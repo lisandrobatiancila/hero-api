@@ -1,0 +1,25 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `createAccount`(
+in fname varchar(30), 
+in lname varchar(30), 
+in email varchar(30), 
+in password varchar(30),
+in registerType varchar(10)
+)
+BEGIN
+	DECLARE isFound BOOL DEFAULT FALSE;
+    DECLARE message VARCHAR(100) DEFAULT "";
+    DECLARE code INT DEFAULT 0;
+    
+    SELECT exists(SELECT 1 FROM account WHERE account.email = email) INTO isFound;
+    
+    IF isFound = FALSE THEN
+		INSERT INTO account(fname, lname, email, password, registerType) VALUES(@fname, @lname, @email, @password, @registerType);
+        SET message = "Success creating account.";
+        SET code = 200;
+	ELSE
+		SET message = "Email already exists.";
+        SET code = 400;
+	END IF;
+    
+    SELECT message, code;
+END
