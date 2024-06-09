@@ -8,26 +8,23 @@ import { Repository } from 'typeorm';
 type MysqlDTO = {
   message: string;
   code: number;
-}
+};
 @Injectable()
 export class SignupService {
-  constructor(@InjectRepository(UserEntity) private userRepository: Repository<UserEntity>) {
-
-  }
+  constructor(
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>,
+  ) {}
   async create(createSignupDto: CreateSignupDto): Promise<MysqlDTO> {
-    console.log("Signup >>> ");
-    console.log(createSignupDto);
-    const {
-      firstname,
-      lastname,
-      email,
-      password,
-      registerType,
-    } = createSignupDto;
-    const response = await this.userRepository.query("call heroes.createAccount(?, ?, ?, ?, ?)", [firstname, lastname, email, password, registerType]);
+    const { firstname, lastname, email, password, registerType } =
+      createSignupDto;
+    const response = await this.userRepository.query(
+      'call hero.createAccount(?, ?, ?, ?, ?)',
+      [firstname, lastname, email, password, registerType],
+    );
     const responseMessage = response[0][0] as MysqlDTO;
     
-    return {message: responseMessage?.message, code: responseMessage.code};
+    return { message: responseMessage?.message, code: responseMessage.code };
   }
 
   findAll() {

@@ -1,21 +1,22 @@
 import { Injectable } from '@nestjs/common';
-import { CreateLoginDto } from './dto/create-login.dto';
-import { UpdateLoginDto } from './dto/update-login.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/shared/user.entity.dto';
 import { Repository } from 'typeorm';
+import { LoginDTO } from './dto/login.dto';
 
 @Injectable()
 export class LoginService {
-  constructor(@InjectRepository(UserEntity) private userEntity: Repository<UserEntity>) {}
-  
+  constructor(
+    @InjectRepository(UserEntity) private userEntity: Repository<UserEntity>,
+  ) {}
+
   create(loginUserDTO: LoginDTO) {
-    const {
+    const { email, password } = loginUserDTO;
+
+    this.userEntity.query('call heroe.loginUser(email, password)', [
       email,
       password,
-    } = loginUserDTO;
-
-    this.userEntity.query('call heroe.loginUser(email, password)', [email, password]);
+    ]);
 
     return 'This action adds a new login';
   }
@@ -28,7 +29,7 @@ export class LoginService {
     return `This action returns a #${id} login`;
   }
 
-  update(id: number, updateLoginDto: UpdateLoginDto) {
+  update(id: number) {
     return `This action updates a #${id} login`;
   }
 

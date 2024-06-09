@@ -15,7 +15,7 @@ import { LoginModule } from './login/login/login.module';
       port: 3306,
       username: 'root',
       password: 'root',
-      database: 'heroes',
+      database: 'hero',
       entities: [UserEntity],
       synchronize: true,
     }),
