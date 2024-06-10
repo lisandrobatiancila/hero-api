@@ -1,6 +1,6 @@
--- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: hero
+-- Host: 127.0.0.1    Database: heroes
 -- ------------------------------------------------------
 -- Server version	8.4.0
 
@@ -96,11 +96,7 @@ LOCK TABLES `user_entity` WRITE;
 UNLOCK TABLES;
 
 --
--- Dumping events for database 'hero'
---
-
---
--- Dumping routines for database 'hero'
+-- Dumping routines for database 'heroes'
 --
 /*!50003 DROP PROCEDURE IF EXISTS `createAccount` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -156,6 +152,25 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `getAllAccount` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllAccount`()
+BEGIN
+	SELECT * FROM account;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `getAllHero` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -170,18 +185,21 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllHero`()
 BEGIN
 	DECLARE countRecord int DEFAULT 0;
     DECLARE message VARCHAR(50) DEFAULT "";
+    DECLARE counter INT DEFAULT 0;
     
     SELECT COUNT(*) FROM hero INTO countRecord;
     
     IF countRecord > 0 THEN
-		SELECT * FROM hero;
+		WHILE counter < 5 DO
+			SET counter = counter + 1;
+        END WHILE;
         SET message = "Hero has records.";
 	ELSE
 		SET countRecord = 0;
         SET message = "No records found.";
     END IF;
     
-    SELECT countRecord, message;
+    SELECT counter;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -222,6 +240,42 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `loginUser` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `loginUser`(in email varchar(30), in password varchar(30))
+BEGIN
+	DECLARE pass VARCHAR(30) DEFAULT "default-";
+    DECLARE message VARCHAR(30) DEFAULT "";
+    DECLARE code int DEFAULT 0;
+    
+	SELECT AC.password FROM account AC WHERE AC.email = email INTO pass ;
+    
+    IF pass != "default-" THEN
+		SET code = 200;
+        SET message = "Valid user";
+        
+	ELSE IF pass = 'default-' THEN
+		SET message = "Invalid user";
+        SET code = 400;
+        
+	END IF;
+    END IF;
+    
+    SELECT pass, message, code, email;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -232,4 +286,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-09 22:37:34
+-- Dump completed on 2024-06-10 17:29:16
