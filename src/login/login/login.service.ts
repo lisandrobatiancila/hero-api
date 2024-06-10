@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from 'src/shared/user.entity.dto';
+import { UserEntity } from 'src/shared-entity/user.entity.dto';
 import { Repository } from 'typeorm';
 import { LoginDTO } from './dto/login.dto';
+import { ResponseDTO } from 'src/shared-dto/response';
 
 @Injectable()
 export class LoginService {
@@ -10,15 +11,22 @@ export class LoginService {
     @InjectRepository(UserEntity) private userEntity: Repository<UserEntity>,
   ) {}
 
-  create(loginUserDTO: LoginDTO) {
+  async create(loginUserDTO: LoginDTO): Promise<ResponseDTO> {
     const { email, password } = loginUserDTO;
-
-    this.userEntity.query('call heroe.loginUser(email, password)', [
+    
+    const response = await this.userEntity.query('CALL heroes.loginUser(?, ?)', [
       email,
       password,
     ]);
-
-    return 'This action adds a new login';
+    const responseObject = response[0][0] as ResponseDTO;
+    console.log(responseObject);
+    
+    return new Promise((resolve, reject) => {
+      resolve({
+        code: responseObject.code,
+        message: responseObject.message,
+      })
+    });
   }
 
   findAll() {

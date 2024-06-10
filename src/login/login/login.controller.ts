@@ -9,13 +9,14 @@ import {
 } from '@nestjs/common';
 import { LoginService } from './login.service';
 import { LoginDTO } from './dto/login.dto';
+import { ResponseDTO } from 'src/shared-dto/response';
 
 @Controller('login')
 export class LoginController {
   constructor(private readonly loginService: LoginService) {}
 
   @Post()
-  create(@Body() createLoginDto: LoginDTO) {
+  create(@Body() createLoginDto: LoginDTO): Promise<ResponseDTO> {
     return this.loginService.create(createLoginDto);
   }
 

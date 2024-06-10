@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateSignupDto } from './dto/create-signup.dto';
 import { UpdateSignupDto } from './dto/update-signup.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from 'src/shared/user.entity.dto';
+import { UserEntity } from 'src/shared-entity/user.entity.dto';
 import { Repository } from 'typeorm';
 
 type MysqlDTO = {
