@@ -1,6 +1,6 @@
--- MySQL dump 10.13  Distrib 8.0.30, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: heroes
+-- Host: 127.0.0.1    Database: hero
 -- ------------------------------------------------------
 -- Server version	8.4.0
 
@@ -96,7 +96,7 @@ LOCK TABLES `user_entity` WRITE;
 UNLOCK TABLES;
 
 --
--- Dumping routines for database 'heroes'
+-- Dumping routines for database 'hero'
 --
 /*!50003 DROP PROCEDURE IF EXISTS `createAccount` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -252,24 +252,29 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `loginUser`(in email varchar(30), in password varchar(30))
 BEGIN
-	DECLARE pass VARCHAR(30) DEFAULT "default-";
+	DECLARE _password VARCHAR(30) DEFAULT "default-";
     DECLARE message VARCHAR(30) DEFAULT "";
     DECLARE code int DEFAULT 0;
     
-	SELECT AC.password FROM account AC WHERE AC.email = email INTO pass ;
+	SELECT AC.password FROM account AC WHERE AC.email = email INTO _password ;
     
-    IF pass != "default-" THEN
-		SET code = 200;
-        SET message = "Valid user";
+    IF _password != "default-" THEN
+		IF _password = password THEN
+			SET code = 200;
+            SET message = "Credentials is valid";
+		ELSE
+			SET code = 400;
+			SET message = "Invalid user";
+		END IF;
         
-	ELSE IF pass = 'default-' THEN
+	ELSE IF _password = 'default-' THEN
 		SET message = "Invalid user";
         SET code = 400;
         
 	END IF;
     END IF;
     
-    SELECT pass, message, code, email;
+    SELECT password, message, code, email;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -286,4 +291,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-10 17:29:16
+-- Dump completed on 2024-06-11  1:47:40

@@ -11,20 +11,22 @@ export class LoginService {
     @InjectRepository(UserEntity) private userEntity: Repository<UserEntity>,
   ) {}
 
-  async create(loginUserDTO: LoginDTO): Promise<ResponseDTO> {
+  async create(loginUserDTO: LoginDTO): Promise<ResponseDTO & LoginDTO> {
     const { email, password } = loginUserDTO;
     
-    const response = await this.userEntity.query('CALL heroes.loginUser(?, ?)', [
+    const response = await this.userEntity.query('CALL hero.loginUser(?, ?)', [
       email,
       password,
     ]);
-    const responseObject = response[0][0] as ResponseDTO;
+    const responseObject = response[0][0] as ResponseDTO & LoginDTO;
     console.log(responseObject);
     
     return new Promise((resolve, reject) => {
       resolve({
         code: responseObject.code,
         message: responseObject.message,
+        email: responseObject.email,
+        password: responseObject.password,
       })
     });
   }
