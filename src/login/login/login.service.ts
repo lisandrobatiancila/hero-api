@@ -19,7 +19,7 @@ export class LoginService {
       password,
     ]);
     const responseObject = response[0][0] as ResponseDTO & LoginDTO;
-    console.log(responseObject);
+    // console.log(responseObject);
     
     return new Promise((resolve, reject) => {
       resolve({
@@ -27,7 +27,7 @@ export class LoginService {
         message: responseObject.message,
         email: responseObject.email,
         password: responseObject.password,
-      })
+      });
     });
   }
 

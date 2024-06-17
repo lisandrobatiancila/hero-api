@@ -5,6 +5,8 @@ import { SignupModule } from './signup/signup/signup.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './shared-entity/user.entity.dto';
 import { LoginModule } from './login/login/login.module';
+import { DashboardModule } from './dashboard/dashboard/dashboard.module';
+import { HeroEntity } from './shared-entity/hero.entity';
 
 @Module({
   imports: [
@@ -16,10 +18,11 @@ import { LoginModule } from './login/login/login.module';
       username: 'root',
       password: 'root',
       database: 'hero',
-      entities: [UserEntity],
+      entities: [UserEntity, HeroEntity],
       synchronize: true,
     }),
-    LoginModule
+    LoginModule,
+    DashboardModule
   ],
   controllers: [AppController],
   providers: [AppService],
