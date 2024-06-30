@@ -16,7 +16,7 @@ export class DashboardService {
   async getAllHeroes(): Promise<HeroDTO[]> {
     const records = await this.heroEntity.query('CALL getAllHero()');
     const heroList = records[0] as HeroDTO[];
-
+    
     return Promise.resolve(heroList);
   }
 
