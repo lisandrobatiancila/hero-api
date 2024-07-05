@@ -7,6 +7,7 @@ import { UserEntity } from './shared-entity/user.entity.dto';
 import { LoginModule } from './login/login/login.module';
 import { DashboardModule } from './dashboard/dashboard/dashboard.module';
 import { HeroEntity } from './shared-entity/hero.entity';
+import { DB_INSTANCE } from './shared-entity/db';
 
 @Module({
   imports: [
@@ -17,8 +18,8 @@ import { HeroEntity } from './shared-entity/hero.entity';
       port: 3306,
       username: 'root',
       password: 'root',
-      database: 'hero',
       entities: [UserEntity, HeroEntity],
+      database: `${DB_INSTANCE}`,
       synchronize: true,
     }),
     LoginModule,
