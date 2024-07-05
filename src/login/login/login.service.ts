@@ -27,7 +27,7 @@ export class LoginService {
         message: responseObject.message,
         email: responseObject.email,
         password: responseObject.password,
-      })
+      });
     });
   }
 
