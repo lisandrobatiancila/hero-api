@@ -4,6 +4,7 @@ import { UserEntity } from 'src/shared-entity/user.entity.dto';
 import { Repository } from 'typeorm';
 import { LoginDTO } from './dto/login.dto';
 import { ResponseDTO } from 'src/shared-dto/response';
+import { DB_INSTANCE } from 'src/shared-entity/db';
 
 @Injectable()
 export class LoginService {
@@ -14,12 +15,11 @@ export class LoginService {
   async create(loginUserDTO: LoginDTO): Promise<ResponseDTO & LoginDTO> {
     const { email, password } = loginUserDTO;
     
-    const response = await this.userEntity.query('CALL hero.loginUser(?, ?)', [
+    const response = await this.userEntity.query(`CALL ${DB_INSTANCE}.loginUser(?, ?)`, [
       email,
       password,
     ]);
     const responseObject = response[0][0] as ResponseDTO & LoginDTO;
-    console.log(responseObject);
     
     return new Promise((resolve, reject) => {
       resolve({
@@ -27,7 +27,7 @@ export class LoginService {
         message: responseObject.message,
         email: responseObject.email,
         password: responseObject.password,
-      })
+      });
     });
   }
 
