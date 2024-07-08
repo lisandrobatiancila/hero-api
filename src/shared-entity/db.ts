@@ -1,1 +1,1 @@
-export const DB_INSTANCE = "heroes";
+export const DB_INSTANCE = "hero";
