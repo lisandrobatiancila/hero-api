@@ -1,4 +1,5 @@
-export type ResponseDTO = {
-    message: string;
-    code: number;
-}
+export type ResponseDTO<T> = {
+  message: string;
+  code: number;
+  genericDTO: T;
+};

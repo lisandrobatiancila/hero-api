@@ -12,19 +12,26 @@ export class HireService {
     private hireHeroEntity: Repository<HireHeroEntity>,
   ) {}
   async create(createHireDto: CreateHireDto): Promise<ResponseDTO> {
-    const { heroID, firstName, lastName } = createHireDto;
+    const { heroID, userId, firstName, lastName } = createHireDto;
 
-    const response = await this.hireHeroEntity.query('CALL hireHero(?, ?, ?)', [
-      heroID,
-      firstName,
-      lastName,
-    ]);
+    const response = await this.hireHeroEntity.query(
+      'CALL hireHero(?, ?, ?, ?)',
+      [heroID, userId, firstName, lastName],
+    );
 
     return Promise.resolve(response[0][0]);
   }
 
-  findAll() {
-    return `This action returns all hire`;
+  async getAllHiredHero(userId: number): Promise<ResponseDTO<[]>> {
+    const response = await this.hireHeroEntity.query(
+      `CALL getAllPersonalHiredHero(?)`,
+      [userId],
+    );
+    console.log(response[0]);
+
+    return new Promise((resolve, reject) => {
+      resolve(response);
+    });
   }
 
   findOne(id: number) {

@@ -12,21 +12,26 @@ export class LoginService {
     @InjectRepository(UserEntity) private userEntity: Repository<UserEntity>,
   ) {}
 
-  async create(loginUserDTO: LoginDTO): Promise<ResponseDTO & LoginDTO> {
+  async create(
+    loginUserDTO: LoginDTO,
+  ): Promise<ResponseDTO<LoginDTO & { userId: number }>> {
     const { email, password } = loginUserDTO;
-    
-    const response = await this.userEntity.query(`CALL ${DB_INSTANCE}.loginUser(?, ?)`, [
-      email,
-      password,
-    ]);
-    const responseObject = response[0][0] as ResponseDTO & LoginDTO;
-    
+
+    const response = await this.userEntity.query(
+      `CALL ${DB_INSTANCE}.loginUser(?, ?)`,
+      [email, password],
+    );
+    const responseObject = response[0][0] as ResponseDTO<
+      LoginDTO & { userId: number }
+    >;
+
     return new Promise((resolve, reject) => {
       resolve({
         code: responseObject.code,
+        genericDTO: responseObject.genericDTO,
         message: responseObject.message,
-        email: responseObject.email,
-        password: responseObject.password,
+        email: responseObject.genericDTO.email,
+        password: responseObject.genericDTO.password,
       });
     });
   }
