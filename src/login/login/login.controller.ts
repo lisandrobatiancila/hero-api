@@ -16,7 +16,7 @@ export class LoginController {
   constructor(private readonly loginService: LoginService) {}
 
   @Post()
-  create(@Body() createLoginDto: LoginDTO): Promise<ResponseDTO> {
+  create(@Body() createLoginDto: LoginDTO): Promise<ResponseDTO<LoginDTO & {userId: number}>> {
     return this.loginService.create(createLoginDto);
   }
 

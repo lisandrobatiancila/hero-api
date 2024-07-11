@@ -30,8 +30,6 @@ export class LoginService {
         code: responseObject.code,
         genericDTO: responseObject.genericDTO,
         message: responseObject.message,
-        email: responseObject.genericDTO.email,
-        password: responseObject.genericDTO.password,
       });
     });
   }
