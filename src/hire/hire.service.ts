@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { HireHeroEntity } from 'src/shared-entity/hero.entity';
 import { Repository } from 'typeorm';
 import { ResponseDTO } from 'src/shared-dto/response';
+import { HeroDTO } from 'src/dashboard/dashboard/dto/hero.dto';
 
 @Injectable()
 export class HireService {
@@ -11,7 +12,7 @@ export class HireService {
     @InjectRepository(HireHeroEntity)
     private hireHeroEntity: Repository<HireHeroEntity>,
   ) {}
-  async create(createHireDto: CreateHireDto): Promise<ResponseDTO> {
+  async create(createHireDto: CreateHireDto): Promise<ResponseDTO<HeroDTO[]>> {
     const { heroID, userId, firstName, lastName } = createHireDto;
 
     const response = await this.hireHeroEntity.query(
@@ -22,15 +23,18 @@ export class HireService {
     return Promise.resolve(response[0][0]);
   }
 
-  async getAllHiredHero(userId: number): Promise<ResponseDTO<[]>> {
+  async getAllHiredHero(userId: number): Promise<ResponseDTO<HeroDTO[]>> {
     const response = await this.hireHeroEntity.query(
       `CALL getAllPersonalHiredHero(?)`,
       [userId],
     );
-    console.log(response[0]);
 
     return new Promise((resolve, reject) => {
-      resolve(response);
+      resolve({
+        code: 200,
+        message: 'List of hired heroes',
+        genericDTO: response[0],
+      });
     });
   }
 

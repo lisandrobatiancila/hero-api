@@ -6,28 +6,31 @@ import { LoginDTO } from './dto/login.dto';
 import { ResponseDTO } from 'src/shared-dto/response';
 import { DB_INSTANCE } from 'src/shared-entity/db';
 
+type CustomLoginDTO = LoginDTO & { userId: number };
 @Injectable()
 export class LoginService {
   constructor(
     @InjectRepository(UserEntity) private userEntity: Repository<UserEntity>,
   ) {}
 
-  async create(
-    loginUserDTO: LoginDTO,
-  ): Promise<ResponseDTO<LoginDTO & { userId: number }>> {
+  async create(loginUserDTO: LoginDTO): Promise<ResponseDTO<CustomLoginDTO>> {
     const { email, password } = loginUserDTO;
 
     const response = await this.userEntity.query(
       `CALL ${DB_INSTANCE}.loginUser(?, ?)`,
       [email, password],
     );
-    const responseObject = response[0][0] as ResponseDTO<
-      LoginDTO & { userId: number }
-    >;
-
+    const responseObject = response[0][0];
+    responseObject.genericDTO = {
+      userId: responseObject?.userId,
+      email: responseObject?.email,
+      password: responseObject?.password,
+    }
+    
+    
     return new Promise((resolve, reject) => {
       resolve({
-        code: responseObject.code,
+        code: responseObject?.code,
         genericDTO: responseObject.genericDTO,
         message: responseObject.message,
       });
