@@ -12,15 +12,17 @@ export class HireService {
     @InjectRepository(HireHeroEntity)
     private hireHeroEntity: Repository<HireHeroEntity>,
   ) {}
-  async create(createHireDto: CreateHireDto): Promise<ResponseDTO<HeroDTO[]>> {
+  async create(createHireDto: CreateHireDto): Promise<undefined> {
     const { heroID, userId, firstName, lastName } = createHireDto;
 
     const response = await this.hireHeroEntity.query(
       'CALL hireHero(?, ?, ?, ?)',
       [heroID, userId, firstName, lastName],
     );
+    const responseAPI = response[0][0];
+    responseAPI.genericDTO = undefined;
 
-    return Promise.resolve(response[0][0]);
+    return Promise.resolve(responseAPI);
   }
 
   async getAllHiredHero(userId: number): Promise<ResponseDTO<HeroDTO[]>> {

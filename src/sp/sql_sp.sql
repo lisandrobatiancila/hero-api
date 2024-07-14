@@ -68,7 +68,7 @@ CREATE TABLE `hero` (
 
 LOCK TABLES `hero` WRITE;
 /*!40000 ALTER TABLE `hero` DISABLE KEYS */;
-INSERT INTO `hero` VALUES (1,'superman','man of steel','a good crypto guy',1),(3,'flash','speed man','the super speedy man',1),(4,'batman','rich man','the super rich man',2);
+INSERT INTO `hero` VALUES (1,'superman','man of steel','a good crypto guy',1),(3,'flash','speed man','the super speedy man',0),(4,'batman','rich man','the super rich man',1);
 /*!40000 ALTER TABLE `hero` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -111,7 +111,7 @@ CREATE TABLE `hire` (
   `firstname` varchar(50) DEFAULT NULL,
   `lastname` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -120,7 +120,7 @@ CREATE TABLE `hire` (
 
 LOCK TABLES `hire` WRITE;
 /*!40000 ALTER TABLE `hire` DISABLE KEYS */;
-INSERT INTO `hire` VALUES (4,4,41,'ada','ahdah'),(5,4,41,'ada','ahdah'),(6,3,41,'asda','asda');
+INSERT INTO `hire` VALUES (57,4,41,'ada','qwe'),(58,1,41,'ahh','eew');
 /*!40000 ALTER TABLE `hire` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -184,4 +184,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-10  5:14:40
+-- Dump completed on 2024-07-14 22:27:08
