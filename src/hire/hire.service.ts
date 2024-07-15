@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateHireDto } from './dto/create-hire.dto';
+import { CreateHireDto, RemoveHeroDTO } from './dto/create-hire.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HireHeroEntity } from 'src/shared-entity/hero.entity';
 import { Repository } from 'typeorm';
@@ -38,6 +38,12 @@ export class HireService {
         genericDTO: response[0],
       });
     });
+  }
+
+  async removeHero(param: RemoveHeroDTO): Promise<ResponseDTO<undefined>> {
+    console.log(param);
+
+    return Promise.resolve({ code: 200, message: 'tests', genericDTO: null });
   }
 
   findOne(id: number) {

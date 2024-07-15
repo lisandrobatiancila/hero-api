@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { HireService } from './hire.service';
-import { CreateHireDto } from './dto/create-hire.dto';
+import { CreateHireDto, RemoveHeroDTO } from './dto/create-hire.dto';
 
 @Controller('hire')
 export class HireController {
@@ -14,6 +14,11 @@ export class HireController {
   @Get('/all-hired-hero/:userId')
   getAllHiredHero(@Param('userId') userId: number) {
     return this.hireService.getAllHiredHero(userId);
+  }
+
+  @Post('/remove-hero')
+  removeHero(@Body() param: RemoveHeroDTO) {
+    return this.hireService.removeHero(param);
   }
 
   @Get(':id')
