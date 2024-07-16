@@ -43,7 +43,11 @@ export class HireService {
   async removeHero(param: RemoveHeroDTO): Promise<ResponseDTO<undefined>> {
     console.log(param);
 
-    return Promise.resolve({ code: 200, message: 'tests', genericDTO: null });
+    return Promise.resolve({
+      code: 200,
+      message: 'tests',
+      genericDTO: undefined,
+    });
   }
 
   findOne(id: number) {
