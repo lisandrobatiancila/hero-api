@@ -5,6 +5,7 @@ import { HireHeroEntity } from 'src/shared-entity/hero.entity';
 import { Repository } from 'typeorm';
 import { ResponseDTO } from 'src/shared-dto/response';
 import { HeroDTO } from 'src/dashboard/dashboard/dto/hero.dto';
+import { DB_INSTANCE } from 'src/shared-entity/db';
 
 @Injectable()
 export class HireService {
@@ -31,7 +32,7 @@ export class HireService {
       [userId],
     );
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       resolve({
         code: 200,
         message: 'List of hired heroes',
@@ -40,14 +41,17 @@ export class HireService {
     });
   }
 
-  async removeHero(param: RemoveHeroDTO): Promise<ResponseDTO<undefined>> {
-    console.log(param);
+  async removeHero(param: RemoveHeroDTO): Promise<ResponseDTO> {
+    const { heroId, userId } = param;
+    const dbResponse = await this.hireHeroEntity.query(
+      `CALL ${DB_INSTANCE}.removeHiredHero(?, ?)`,
+      [heroId, userId],
+    );
 
-    return Promise.resolve({
-      code: 200,
-      message: 'tests',
-      genericDTO: undefined,
-    });
+    const apiResponse = dbResponse[0][0];
+    apiResponse.genericDTO = {};
+
+    return apiResponse;
   }
 
   findOne(id: number) {
